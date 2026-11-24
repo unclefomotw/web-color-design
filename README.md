@@ -18,6 +18,9 @@ Or copy this directory into your agent's skills folder, for example
 
 - Decision priorities and task context (reading, interactive products, data)
 - Perception and attention: luminance vs. hue, emphasis, hierarchy
+- Reading comfort over sustained use, as a goal separate from legibility:
+  contrast band, glare, saturation, visual noise, luminance stability, and how
+  to verify comfort with readers
 - Color models: HEX/RGB, HSV, OKLCH and their limits
 - Semantic token architecture, state matrices, feedback colors
 - WCAG 2.2 AA/AAA gates: text and non-text contrast, links, focus, flashing

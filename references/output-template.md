@@ -30,9 +30,17 @@ selected+focus, disabled) and feedback colors.
 Short, tied to the task: why this hierarchy, where accent color is spent, what
 was traded off.
 
+### Reading comfort
+- Expected session length and lighting:
+- Comfort decisions (contrast band, surface tone, saturation, noise, luminance
+  stability, theme options):
+- Verified by: reader test (n, duration, ratings) / heuristic self-review only /
+  not checked
+
 ### Measured vs. intended
 - Measured: (pairs checked, tool used)
-- Not measured: (gradients, images, forced colors, real devices, user testing)
+- Not measured: (gradients, images, forced colors, real devices, reader
+  comfort testing)
 
 ### Remaining risks
 
@@ -45,8 +53,10 @@ Order findings by accessibility impact, then task impact.
 | 1 | Blocker | Form error state | Error shown only by red border; border 2.1:1 vs surface | SC 1.4.1, 1.4.11, 3.3.1 | Add error text tied with `aria-describedby`; border `#b3261e` (6.53:1 vs `#fff`) |
 
 Severity: Blocker (content or action unusable for some users), Major (fails a
-WCAG AA criterion or causes likely errors), Minor (hierarchy or consistency),
-Suggestion.
+WCAG AA criterion or causes likely errors), Minor (hierarchy, consistency, or
+reading comfort, e.g. glare, saturated backgrounds behind text, luminance
+jumps), Suggestion. Escalate a comfort issue to Major when it affects the
+primary reading surface of a long-reading product.
 
 End with checks that were not performed.
 

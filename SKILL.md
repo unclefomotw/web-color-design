@@ -1,6 +1,6 @@
 ---
 name: web-color-design
-description: Design, audit, or implement accessible website color palettes and semantic color tokens using HCI, visual perception, UI/UX, and WCAG 2.2 principles. Use when choosing backgrounds, text, accents, light or dark themes, interaction states, data visualization colors, or reviewing CSS and design systems for color and contrast (配色、色票、對比、深色模式). Prioritize readability, task performance, accessibility, and consistency over aesthetic trends.
+description: Design, audit, or implement accessible website color palettes and semantic color tokens using HCI, visual perception, UI/UX, and WCAG 2.2 principles. Use when choosing backgrounds, text, accents, light or dark themes, interaction states, data visualization colors, or reviewing CSS and design systems for color and contrast, including complaints that pages are tiring, glaring, or uncomfortable to read (配色、色票、對比、深色模式、閱讀舒適、刺眼). Prioritize accessibility, readability, task performance, reading comfort over sustained use, and consistency over aesthetic trends.
 ---
 
 # Website color design
@@ -14,9 +14,15 @@ Design color around human tasks, not around a fashionable palette. Priorities:
 
 1. Accessibility, legibility, and the user's own settings (theme, contrast, forced colors).
 2. Task comprehension and error prevention.
-3. Visual hierarchy and consistency.
-4. Comfort and aesthetic preference.
-5. Brand expression.
+3. Reading comfort over sustained use (see §3). Comfort never justifies going
+   below priority 1; a "soft" low-contrast palette that raises reading effort is
+   not comfortable.
+4. Visual hierarchy and consistency.
+5. Aesthetic preference and brand expression.
+
+Legibility and readability are necessary for comfort but not sufficient: short
+reading performance, preference and comfort over a long session can diverge
+[E]. Treat comfort as its own goal with its own checks.
 
 When two priorities conflict, first look for a solution that satisfies both —
 usually by changing a color's role (e.g. brand color as a fill or large heading,
@@ -58,7 +64,82 @@ reinforces hierarchy but cannot replace it.
   brightness, warm-shift modes (Night Shift/True Tone), wide-gamut and low-end
   panels.
 
-## 3. Choose a color model
+## 3. Design for reading comfort
+
+Readers should be able to read for as long as the task needs without avoidable
+glare, visual noise, or extra effort. This matters most for typical readers in
+long sessions: articles, documentation, dashboards watched all day, editors.
+
+**Set the session-length target first.** Pages people glance at (landing
+pages, checkout) need legibility. Pages people read for a long time (articles,
+docs, mail, editors, monitoring) also need the comfort rules below. Note the
+expected session length in the assumptions.
+
+**Contrast: enough, without harsh extremes [H]**
+- Meet the §6 gates first. Then, for long-form body text, start around 7:1 or
+  higher. Near-black text on white or a very light neutral usually gets there
+  without using the absolute extremes.
+- Do not use comfort as a reason to fall below 4.5:1, or to make informational
+  secondary text faint. Low-contrast "soft" text looks calm but costs effort.
+- Maximum contrast is not forbidden. If testing or user feedback shows glare,
+  reduce the extremes slightly: tone down the surface or the text, and stay at
+  or above the target.
+
+**Large bright and saturated areas [H]**
+- Large full-white areas can feel glaring in dim rooms and on bright displays.
+  A very light neutral canvas, or an offered dark theme, can help. Do not
+  assume one surface value suits every environment; that is what theme choice
+  is for.
+- Avoid highly saturated colors on large backgrounds behind or around body
+  text. Keep saturation for small accents.
+- Avoid text in one saturated hue on a background of another saturated hue,
+  especially red and blue. The colors can appear to sit at different depths or
+  shimmer (chromostereopsis) [E].
+
+**Visual noise behind text [H]**
+- Give body text a uniform background. Avoid gradients, patterns, photos, or
+  textures behind running text; if they are unavoidable, add an opaque or
+  near-opaque scrim and measure the worst region.
+- Limit how many accent colors compete in a reading view: links, highlights,
+  badges, and syntax colors add up.
+- Keep syntax and highlight palettes moderate in chroma for code that is read
+  at length. Distinguish tokens by lightness and weight as well as hue.
+
+**Luminance stability across the session [H]**
+- Avoid sudden large luminance jumps between adjacent regions and between
+  views, for example a full-white modal, embed, or PDF viewer inside a dark
+  theme, or bright full-screen flashes during navigation.
+- Make theme changes and page transitions steady, without flicker and without
+  a flash of the wrong theme on load.
+
+**Dark themes for long reading [H]**
+- Use slightly off-white text and a dark, not necessarily pure black, canvas.
+- Avoid very thin weights.
+- Keep body text comfortably above the minimum without maximal white-on-black
+  glare. See §7 Dark themes.
+
+**User control**
+- Comfort varies widely between people and settings. Offer light and dark
+  themes where the product is read at length.
+- Honor system preferences (`prefers-color-scheme`, `prefers-contrast`) and
+  never block user overrides such as reader modes, zoom, or user style sheets.
+
+**Claims to avoid**
+- Do not claim a palette "protects eyes", "reduces eye strain", or that a
+  color is "calming" without evidence specific to that claim.
+- Do not present a preference as better performance, or the reverse.
+
+**Verify comfort; ratios cannot**
+- When feasible, have representative readers read realistic content for a
+  realistic duration (for long-form, at least 10–20 minutes) on real devices,
+  in the lighting conditions you expect.
+- Record subjective ratings (ease, glare, tiredness) alongside speed,
+  comprehension and errors. Compare against the current or an alternative
+  palette, in each supported theme.
+- If no such test was possible, report comfort as an intended design goal and
+  not verified.
+
+## 4. Choose a color model
 
 - RGB/HEX for interchange and inspection; HSB/HSV for intuitive exploration;
   OKLCH for generating and adjusting more perceptually consistent scales.
@@ -74,7 +155,7 @@ reinforces hierarchy but cannot replace it.
 - Never infer WCAG conformance from HSB, HSL or OKLCH differences. Do not
   mandate fixed hue, saturation or brightness ranges for backgrounds.
 
-## 4. Build semantic palettes
+## 5. Build semantic palettes
 
 Make role and state relationships predictable, and changeable without editing
 components.
@@ -95,7 +176,7 @@ Rules:
 
 - Define foreground/background **pairs**, not isolated swatches.
 - Decorative dividers need not meet control-boundary contrast; control
-  boundaries that identify a control do (see §5).
+  boundaries that identify a control do (see §6).
 - Secondary and muted text that conveys information must still meet text contrast.
 - Do not lower opacity across the board: the resulting contrast depends on
   whatever is underneath. Resolve to an opaque value, or measure every
@@ -110,7 +191,7 @@ Rules:
 - **Warning/yellow.** Yellow text on light surfaces rarely reaches 4.5:1. Use
   yellow for fills or icons, with dark amber or neutral text. [H]
 
-## 5. Accessibility acceptance gates
+## 6. Accessibility acceptance gates
 
 Default to WCAG 2.2 AA unless a stricter target is required. Consult the
 normative text for formal conformance reviews or ambiguous cases.
@@ -178,10 +259,10 @@ normative text for formal conformance reviews or ambiguous cases.
   normative, and never replace the WCAG 2 result.
 
 **Comfort**
-- Sufficient contrast does not mean pure black on pure white. For long-form
-  body text, ~7:1 is a robust voluntary starting target; then test comfort. [H]
+- Passing these gates establishes legibility, not comfort. See §3 for reading
+  comfort targets and how to verify them.
 
-## 6. Adapt to the task, script and theme
+## 7. Adapt to the task, script and theme
 
 ### Reading and documentation
 - Use quiet surfaces, readable body text and clearly recognizable links.
@@ -244,7 +325,7 @@ normative text for formal conformance reviews or ambiguous cases.
 - Do not add a second theme without scope approval when it significantly
   expands the work.
 
-## 7. Implement and verify
+## 8. Implement and verify
 
 Validate what users actually receive, not the intended palette.
 
@@ -263,20 +344,28 @@ Validate what users actually receive, not the intended palette.
 - For meaningful tradeoffs, compare alternatives in realistic tasks: reading
   accuracy and speed, comprehension, completion, errors, subjective comfort. Do
   not present preference as measured performance.
+- For long-reading surfaces, do a sustained reading pass yourself at minimum:
+  read real content for several minutes in each theme, in a dim and a bright
+  setting. Look for glare, shimmer, noisy backgrounds and luminance jumps. Run
+  the reader test in §3 when feasible. Label self-review as heuristic
+  inspection, not user evidence.
 - Report checks that could not be performed.
 
-## 8. Required output
+## 9. Required output
 
 Use the formats in `references/output-template.md`. Do not produce a literature
 review or fetch research by default; give the rationale, tradeoffs and measured
 results that apply.
 
 - **Palette proposal:** assumptions; semantic tokens with usable CSS values;
-  key pair ratios with pass/fail; rationale tied to the task; remaining risks.
-- **Audit:** findings ranked by accessibility impact, then task impact; affected
-  components; specific fixes with measured replacement values.
+  key pair ratios with pass/fail; rationale tied to the task; expected session
+  length and the comfort decisions made for it; remaining risks.
+- **Audit:** findings ranked by accessibility impact, then task impact, then
+  reading-comfort impact; affected components; specific fixes with measured
+  replacement values.
 - **Implementation:** changed files, checks run, unverified states.
 
-Always keep measured results apart from targets and recommendations. Never call
+Always keep measured results apart from targets and recommendations. Report
+comfort as verified only when readers were actually tested. Never call
 a palette objectively optimal, or a site WCAG-compliant, on the basis of
 palette tests alone.
