@@ -222,6 +222,12 @@ normative text for formal conformance reviews or ambiguous cases.
   contrast. Author content must not fully hide it (2.4.11, AA).
 - Focus Appearance (2.4.13) is AAA. Do not conflate it with AA.
 - Prefer a distinct outline with offset over a subtle hue shift. [H]
+- Box-shadow focus rings (e.g. Tailwind `ring-*`) disappear in forced-colors
+  mode, because `box-shadow` is forced to `none`. Pair them with an `outline`
+  fallback, such as `outline: 2px solid transparent` or Tailwind v4
+  `outline-hidden`, which forced colors paints visibly.
+- Never remove the outline (`outline: none`, Tailwind `outline-none`) unless a
+  replacement stays visible in forced colors.
 
 **Flashing [N]**
 - No content flashes more than three times per second unless below the general
@@ -310,13 +316,27 @@ normative text for formal conformance reviews or ambiguous cases.
 
 ### User settings and theme implementation
 - If both themes are supported, honor `prefers-color-scheme` initially, provide
-  an accessible explicit override, persist it, and set `color-scheme` to the
-  active theme so native controls match.
+  an accessible explicit override, persist it, and set `color-scheme` on the
+  root to the active theme so native controls (scrollbars, inputs) match.
+  `color-scheme: light dark` alone tracks the OS, not an explicit override.
+- Set `<meta name="theme-color">` to the active canvas color, per theme, and
+  update it when the user overrides the theme. Otherwise the browser UI next to
+  the page becomes a luminance jump (§3).
 - Honor `prefers-contrast: more` (stronger borders and text) and, where
   feasible, `less`. Honor `prefers-reduced-transparency` by replacing
   translucent or blurred layers with opaque surfaces.
 - Use `accent-color` to theme native checkboxes, radios and ranges instead of
   rebuilding them.
+- Give native `<select>` (and its options) explicit `background-color` and
+  `color` from semantic tokens. Some platforms, notably Windows in dark mode,
+  otherwise render unreadable or mismatched dropdowns. Verify the open list as
+  well as the closed control.
+- Set `-webkit-tap-highlight-color` intentionally. If you make it transparent,
+  provide your own visible pressed/active state so touch input still gets
+  feedback, and check that state's contrast.
+- Under `prefers-reduced-motion: reduce`, make color and theme transitions
+  instant or near-instant. Stop pulsing, shimmering and color-cycling effects,
+  including loading skeletons.
 - Test `forced-colors: active`: rely on system colors (Canvas, CanvasText,
   LinkText, ButtonText, Highlight), keep focus and boundaries visible, and never
   set `forced-color-adjust: none` globally.
@@ -356,6 +376,12 @@ Validate what users actually receive, not the intended palette.
 Use the formats in `references/output-template.md`. Do not produce a literature
 review or fetch research by default; give the rationale, tradeoffs and measured
 results that apply.
+
+When this skill runs inside another review with a mandated format (e.g. a terse
+`file:line - issue` checklist), follow that format. Keep one line per finding
+and drop the rationale, but still include the measured ratio and the threshold
+in the line (e.g. `Button.tsx:42 - muted text 3.9:1 < 4.5:1 → --color-text-secondary`).
+Never drop measurements or present an unmeasured value as measured.
 
 - **Palette proposal:** assumptions; semantic tokens with usable CSS values;
   key pair ratios with pass/fail; rationale tied to the task; expected session

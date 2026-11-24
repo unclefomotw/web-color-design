@@ -23,8 +23,21 @@ selected+focus, disabled) and feedback colors.
 
 ### CSS
 ```css
-:root { color-scheme: light dark; /* primitives, then semantic tokens */ }
+/* Primitives, then semantic tokens. color-scheme follows the ACTIVE theme,
+   including an explicit user override, so native controls match. */
+:root { color-scheme: light; }
+:root[data-theme="dark"] { color-scheme: dark; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { color-scheme: dark; }
+}
 ```
+```html
+<!-- Keep browser UI in step with the page canvas; update it on theme override. -->
+<meta name="theme-color" content="#fafafa" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#121212" media="(prefers-color-scheme: dark)">
+```
+`color-scheme: light dark` alone is correct only when there is no explicit
+theme override.
 
 ### Rationale
 Short, tied to the task: why this hierarchy, where accent color is spent, what
